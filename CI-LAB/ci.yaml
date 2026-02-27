@@ -1,0 +1,68 @@
+name: CI GitHub Actions
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup-node with version 20 and cache npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install, lint, test and generate coverage
+        run: |
+          npm ci
+          npm run lint
+          npm test -- --coverage
+
+      - name: Upload coverage artifact (7 Days)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  build:
+    needs: lint-and-test
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup-node with version 20 and cache npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload build artifact (7 Days)
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-build
+          path: dist/
+          retention-days: 7
