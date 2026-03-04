@@ -12,11 +12,21 @@ Este repositório foi criado para treinar:
 
 ## Aplicação
 
-A aplicação é propositalmente simples:
+A aplicação é uma calculadora básica em `src/math.js` com as funções:
 
-- função `sum(a, b)` em `src/math.js`
+- `sum(a, b)`
+- `subtract(a, b)`
+- `multiply(a, b)`
+- `divide(a, b)`
+
+Regra de negócio:
+
+- `divide(a, 0)` lança erro (`Division by zero is not allowed`)
+
+Também há:
+
 - ponto de entrada em `src/index.js`
-- teste básico em `test/math.test.mjs`
+- testes em `test/math.test.mjs` cobrindo todas as operações
 
 Scripts disponíveis no `package.json`:
 
@@ -101,4 +111,3 @@ Passos:
 ├── package.json
 └── package-lock.json
 ```
-
