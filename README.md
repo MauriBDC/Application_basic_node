@@ -1,10 +1,10 @@
 # CI/CD Lab com GitHub Actions
 
-Projeto mínimo em Node.js para praticar CI/CD com GitHub Actions.
+Este repositório é um laboratório de aprendizado prático de CI/CD com GitHub Actions.
 
 ## Objetivo
 
-Este repositório foi criado para treinar:
+Este laboratório foi criado para treinar:
 
 - estrutura básica de aplicação Node
 - pipeline de integração contínua (CI)
