@@ -60,6 +60,22 @@ O workflow executa em:
 
 - `push` para branches `master` e `develop`
 - `pull_request` para branch `master`
+- com `paths-ignore` para não executar CI quando a mudança for apenas documentação:
+  - `README.md`
+  - `**/*.md`
+
+### Otimização de disparo (documentação)
+
+Para reduzir execuções desnecessárias, o workflow ignora commits que alteram somente arquivos Markdown.
+
+Isso significa que mudanças apenas em:
+
+- `README.md`
+- arquivos `*.md`
+
+não disparam o pipeline em `push` e `pull_request`.
+
+Observação: em `pull_request`, se o conjunto de arquivos alterados do PR incluir código ou configuração (por exemplo `.js` ou `.github/workflows/*.yaml`), o CI continua executando normalmente.
 
 ### Configurações globais
 
