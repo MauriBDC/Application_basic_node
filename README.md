@@ -10,6 +10,21 @@ Este laboratório foi criado para treinar:
 - pipeline de integração contínua (CI)
 - publicação de artefatos de teste e build
 
+## Escopo do laboratório
+
+Inclui:
+
+- desenvolvimento incremental de uma calculadora básica
+- testes automatizados
+- execução de CI no GitHub Actions
+- análise de disparos do pipeline por tipo de alteração
+
+Não inclui (nesta fase):
+
+- deploy em ambiente de produção
+- CD com aprovação manual
+- infraestrutura em nuvem (AWS/GCP/Azure)
+
 ## Aplicação
 
 A aplicação é uma calculadora básica em `src/math.js` com as funções:
@@ -50,6 +65,20 @@ npm test -- --coverage
 npm run build
 ```
 
+## Como validar o CI localmente
+
+Sequência usada no pipeline:
+
+1. `npm ci` (instala dependências a partir do lockfile)
+2. `npm run lint` (valida regras básicas de código)
+3. `npm test -- --coverage` (executa testes e gera cobertura)
+4. `npm run build` (gera artefato de build)
+
+Saídas esperadas:
+
+- `coverage/coverage-summary.json`
+- `dist/index.js`
+
 ## Workflow de CI
 
 Arquivo: `.github/workflows/ci.yaml`
@@ -76,6 +105,12 @@ Isso significa que mudanças apenas em:
 não disparam o pipeline em `push` e `pull_request`.
 
 Observação: em `pull_request`, se o conjunto de arquivos alterados do PR incluir código ou configuração (por exemplo `.js` ou `.github/workflows/*.yaml`), o CI continua executando normalmente.
+
+Exemplos práticos:
+
+- Commit alterando apenas `README.md`: CI não dispara
+- Commit alterando `README.md` + `src/math.js`: CI dispara
+- PR com histórico contendo mudanças de código: CI pode continuar disparando mesmo com novo commit só de `.md`
 
 ### Configurações globais
 
@@ -109,6 +144,17 @@ Passos:
    - `npm ci`
    - `npm run build`
 4. Upload do artefato de build (`dist/`) com retenção de 7 dias
+
+## Evolução do laboratório
+
+Evolução implementada para observar múltiplos disparos de CI:
+
+1. função `sum`
+2. adição de `subtract`
+3. adição de `multiply`
+4. adição de `divide` com proteção para divisão por zero
+
+Cada etapa foi feita com commit atômico e testes correspondentes.
 
 ## Estrutura de pastas
 
